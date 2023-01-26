@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import './card.css'
+
 
 import Accueil from './composants/front/Accueil';
 import Panier from './composants/front/Panier';

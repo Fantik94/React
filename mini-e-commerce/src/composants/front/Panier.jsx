@@ -17,10 +17,8 @@ const Panier = () => {
     const adresseRef = useRef();
     const { cart, removeFromCart } = useContext(authent);
     const { formData, handleChange, handleSubmit, formDataCopy } = useContext(formulaire);
-
     const [alerte , setAlerte , getError] = useAlert(verif)
     const {submitted} = useContext(formulaire)
-
     const navigate = useNavigate();
 
     const handleFocus = () => {
@@ -33,8 +31,7 @@ const Panier = () => {
         }
       }, [submitted]);
 
-    const articles = [{titre : "article 1", contenu : "lorem ipsum" , prix : 25},{titre : "article 2", contenu : "lorem ipsum" , prix : 50},{titre : "article 3", contenu : "lorem ipsum" , prix : 698} ]
-    return ( <>
+    return ( <>    
     <h1>Votre Panier</h1>
     <table className="table table-striped">
         <thead>
@@ -61,6 +58,7 @@ const Panier = () => {
     </table>
     <hr/>
     <h2>Votre profil</h2>
+
     <div className="row">
             <form onSubmit={handleSubmit} className="col-12">
                 <input type="text"
@@ -81,7 +79,7 @@ const Panier = () => {
                     />
                 <input type="text" 
                     name="adresse"
-                    placeholder="Votre Rue / Code Postal / Ville"  
+                    placeholder="Rue - Code Postal - Ville"  
                     className="form-control mb-3" 
                     ref={adresseRef}
                     onFocus={handleFocus}
@@ -98,6 +96,7 @@ const Panier = () => {
                     ></textarea>
                 <input type="submit" className="btn btn-warning" value='Commander'></input>
             </form>
+            <Alert alerte={alerte} />
     </div>
     </>);
 }
