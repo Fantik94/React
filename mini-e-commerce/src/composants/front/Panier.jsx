@@ -1,121 +1,105 @@
-import { useArticle } from "../../hook/useArticle";
 import axios from "axios";
 import {useRef} from "react"
-import { contactVerif } from "../verif/verif";
+import { verif } from "../verif/verif";
 import Alert from "../Alert";
 import { useAlert } from "../../hook/useAlert";
+import { useContext } from "react";
+import { authent} from "../../context/authent"
+import { useState, useEffect } from "react";
+import { formulaire } from "../../context/formulaire";
+import { NavLink, useNavigate } from "react-router-dom";
+import React from "react";
 
 const Panier = () => {
-
-    const [articles, setArticles] = useArticle()
-
-    const handleSupprimer = (id) => {
-        axios.delete(`${import.meta.env.VITE_API}articles/${id}.json`)
-             .then(() => {
-                axios.get(`${import.meta.env.VITE_API}articles.json`)
-                .then((reponse) => {
-                    const resultat = []
-                    for(const key in reponse.data){
-                        if(reponse.data[key]) resultat.push({...reponse.data[key] , id : key})
-                    }
-                    setArticles(resultat)
-                })
-             })
-    }
-
-    const nomRef = useRef();
     const emailRef = useRef();
-    const adresseRef = useRef();
     const messageRef = useRef();
+    const nomRef = useRef();
+    const adresseRef = useRef();
+    const { cart, removeFromCart } = useContext(authent);
+    const { formData, handleChange, handleSubmit, formDataCopy } = useContext(formulaire);
 
-    const [alerte , setAlerte , getError] = useAlert(contactVerif)
+    const [alerte , setAlerte , getError] = useAlert(verif)
+    const {submitted} = useContext(formulaire)
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const demande = {
-            nom : JSON.stringify(nomRef.current.value),
-            email : emailRef.current.value ,
-            adresse : JSON.stringify(adresseRef.current.value),
-            message : JSON.stringify(messageRef.current.value)
-        }
-        
-        if(getError(demande)) return ; 
-        
-        // envoyer les données saisies dans l'API pour enregistrement 
-        axios.post(`${import.meta.env.VITE_API}contact.json`, demande)
-             .then(reponse => {
-                // vider le formulaire
-                e.target.reset();
-                // message pour remercier l'utilisateur 
-                setAlerte({type : "success" , liste : ["le message est bien enregistré"] }) 
-             })
-             .catch(ex => setAlerte({type : "warning" , liste : ["erreur lors de l'enregistrement du message"]}))
-    }
+    const navigate = useNavigate();
 
     const handleFocus = () => {
         setAlerte({});
     }
+    
+    useEffect(() => {
+        if (submitted) {
+          navigate('/bon-de-commande');
+        }
+      }, [submitted]);
 
+    const articles = [{titre : "article 1", contenu : "lorem ipsum" , prix : 25},{titre : "article 2", contenu : "lorem ipsum" , prix : 50},{titre : "article 3", contenu : "lorem ipsum" , prix : 698} ]
     return ( <>
-        <h1>Votre Panier</h1>
-        <div className="d-flex justify-content-between align-items-center mb-3">
-            </div>
-            <table className="table table-sm table-striped">
-                <thead>
-                    <tr>
-                        <th>id</th>
-                        <th>nom</th>
-                        <th>prix</th>
-                        <th>actions</th>
-                    </tr>
-                </thead>
-               <tbody>
-                    { articles.map((article) => {
-                        return <tr key={article.id}>
-                            <td>{article.id}</td>
-                            <td>{article.titre}</td>
-                            <td>{article.prix}€</td>
-                            <td>
-                                <button onClick={() => { handleSupprimer(article.id) }} className="btn border-danger text-danger" >supprimer</button>
-                            </td>
-                        </tr>
-                    }) }
-                </tbody>
-            </table>
-            
-            <hr></hr>
-
-            <h1>Votre profil</h1>
-
+    <h1>Votre Panier</h1>
+    <table className="table table-striped">
+        <thead>
+            <tr>
+                <th scope='col'>ID</th>
+                <th scope='col'>Nom</th>
+                <th scope='col'>Prix</th>
+                <th scope='col'>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+         {cart.map(article => {
+          return (
+          <tr key={article.id}>
+            <th scope="row">{article.id}</th>
+            <td>{article.titre}</td>
+            <td>{ new Intl.NumberFormat("fr-FR", { style: 'currency', currency: 'EUR' }).format(article.prix)}</td>
+            <td>
+                <button className="btn border-danger text-danger" onClick={ () => removeFromCart(article)}>Supprimer</button>
+            </td>
+          </tr>  
+        )})}
+        </tbody>
+    </table>
+    <hr/>
+    <h2>Votre profil</h2>
+    <div className="row">
             <form onSubmit={handleSubmit} className="col-12">
-                <input type="nom" 
-                    placeholder="votre nom"  
+                <input type="text"
+                    name="nom"
+                    placeholder="Votre Nom"  
                     className="form-control mb-3" 
                     ref={nomRef}
-                    onFocus={handleFocus}/>
-
+                    onFocus={handleFocus}
+                    onChange={handleChange}
+                    />
                 <input type="email" 
+                    name="email"
                     placeholder="votre@email.fr"  
                     className="form-control mb-3" 
                     ref={emailRef}
-                    onFocus={handleFocus}/>
-
-                <input type="adresse" 
-                    placeholder="votre rue / code postal / ville"  
+                    onFocus={handleFocus}
+                    onChange={handleChange}
+                    />
+                <input type="text" 
+                    name="adresse"
+                    placeholder="Votre Rue / Code Postal / Ville"  
                     className="form-control mb-3" 
                     ref={adresseRef}
-                    onFocus={handleFocus}/>
-
-                <textarea  
-                    placeholder="Commentaire" 
+                    onFocus={handleFocus}
+                    onChange={handleChange}
+                    />
+                <textarea 
+                    name="commentaire"
+                    placeholder="Votre message" 
                     className="form-control mb-3" 
                     rows={5} 
                     ref={messageRef}
-                    onFocus={handleFocus}></textarea>
-                <input type="submit" className="btn btn-warning" value="Commander"/>
+                    onFocus={handleFocus}
+                    onChange={handleChange}
+                    ></textarea>
+                <input type="submit" className="btn btn-warning" value='Commander'></input>
             </form>
-            <Alert alerte={alerte} />
-    </> );
+    </div>
+    </>);
 }
- 
+
 export default Panier;

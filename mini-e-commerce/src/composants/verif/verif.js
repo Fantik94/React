@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const contactVerif = Joi.object({
+export const verif = Joi.object({
     nom : Joi.string()
                .min(1)
                .max(20)

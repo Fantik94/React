@@ -11,8 +11,9 @@ export function useArticle(){
                 if(reponse.data[key]) resultat.push({...reponse.data[key] , id : key})
             }
             setArticles(resultat)
+           
          })
-    } , [articles.length] )
+    } , [articles.length] ) 
 
     return [articles, setArticles]  ; 
 }
