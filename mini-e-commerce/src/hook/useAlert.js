@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 export const useAlert = ( schemaVerif ) => {
     const [ alerte , setAlerte ] = useState({})
     const getError = (data) => {

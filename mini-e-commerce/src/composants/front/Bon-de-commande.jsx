@@ -4,7 +4,7 @@ import { useState } from "react";
 import { formulaire } from "../../context/formulaire";
 
 
-const Bondecommande = () => {
+const Bdc = () => {
     // const articles = [{titre : "article 1", contenu : "lorem ipsum" , prix : 25},{titre : "article 2", contenu : "lorem ipsum" , prix : 50},{titre : "article 3", contenu : "lorem ipsum" , prix : 698} ]
     const { cart } = useContext(authent);
     const { formData, handleChange, handleSubmit, formDataCopy } = useContext(formulaire);
@@ -42,4 +42,4 @@ const Bondecommande = () => {
     </> );
 }
  
-export default Bondecommande;
+export default Bdc;

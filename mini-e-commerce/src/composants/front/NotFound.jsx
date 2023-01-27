@@ -5,7 +5,7 @@ const NotFound = () => {
    <h1 className="p-3 display-2 text-center rounded">Erreur 404 
    <br>
    </br>
-   <small>page introuvable</small></h1>
+   <small>Page introuvable</small></h1>
          <div className="text-center">
             <img src="error.gif" alt="" className="mb-2"/>
          </div>

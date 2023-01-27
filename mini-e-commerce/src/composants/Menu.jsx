@@ -2,8 +2,8 @@ import { NavLink , useNavigate } from "react-router-dom"
 
 function Menu() {
     const navigate = useNavigate()
-    const handleLogout = (e) => {
-        e.preventDefault();
+    const handleLogout = (logout) => {
+        logout.preventDefault();
         logout()
         navigate("/login")
     }
