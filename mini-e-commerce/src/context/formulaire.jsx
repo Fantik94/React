@@ -1,4 +1,4 @@
-import { createContext , useState } from "react"
+import { useState } from "react"
 import React from "react";
 import { authent } from "./authent";
 import axios from "axios";
@@ -11,7 +11,7 @@ export function FormProvider({children}) {
     const [formData, setFormData] = useState({ nom : "", email : "", adresse: "", commentaire :""});
     const [formDataCopy, setFormDataCopy] = useState({nom : "", email : "", adresse: "", commentaire :""});
     const [submitted, setSubmitted] = useState(false);
-    const { cart, removeFromCart } = useContext(authent);
+    const { cart } = useContext(authent);
 
     function handleChange(event) {
       const { name, value } = event.target;

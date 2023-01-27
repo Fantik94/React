@@ -1,15 +1,14 @@
-import axios from "axios";
 import {useRef} from "react"
 import { verif } from "../verif/verif";
 import Alert from "../Alert";
 import { useAlert } from "../../hook/useAlert";
 import { useContext } from "react";
 import { authent} from "../../context/authent"
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { formulaire } from "../../context/formulaire";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React from "react";
-import { useArticle } from "../../hook/useArticle";
+
 
 const Panier = () => {
     const emailRef = useRef();

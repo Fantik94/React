@@ -1,12 +1,7 @@
-import { NavLink , useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 function Menu() {
-    const navigate = useNavigate()
-    const handleLogout = (logout) => {
-        logout.preventDefault();
-        logout()
-        navigate("/login")
-    }
+   
     return ( 
         <div className="bg-dark mb-3">
             <nav className="navbar navbar-expand navbar-dark container">
